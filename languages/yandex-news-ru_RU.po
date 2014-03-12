@@ -1,0 +1,39 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Yandex News\n"
+"Report-Msgid-Bugs-To: Yevhen <yevhen@live.com>\n"
+"POT-Creation-Date: 2013-12-05 22:55+0200\n"
+"PO-Revision-Date: 2013-12-05 23:02+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Yevhen <yevhen@live.com>\n"
+
+#: yandex-news.php:48
+msgid "Yandex.News plugin settings page"
+msgstr "Настройки плагина Яндекс.Новости"
+
+#: yandex-news.php:49
+msgid "Yandex.News"
+msgstr "Яндекс.Новости"
+
+#: yandex-news.php:83
+msgid "Main Feed Settings"
+msgstr "Основные настройки ленты"
+
+#: yandex-news.php:90
+msgid "Path"
+msgstr "Путь"
+
+#: yandex-news.php:98
+msgid "Image"
+msgstr "Картинка"
+
+#: yandex-news.php:106
+msgid "Categories"
+msgstr "Категории"
+
+#: yandex-news.php:133
+#, php-format
+msgid "Your feed URL: <a href=\"%s\">%1$s</a>"
+msgstr "URL вашей ленты: <a href=\"%s\">%1$s</a>"
