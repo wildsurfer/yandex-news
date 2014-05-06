@@ -2,8 +2,8 @@
 Contributors: yvh
 Donate link: http://goo.gl/dt4aM6
 Tags: Yandex, feed, news, YML, export, XML, RSS, RSS2, Яндекс, Яндекс.Новости
-Requires at least: 3.0.1
-Tested up to: 3.8.1
+Requires at least: 3.0
+Tested up to: 3.9
 Stable tag: 0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
