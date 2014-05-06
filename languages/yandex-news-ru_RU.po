@@ -1,17 +1,21 @@
+# #-#-#-#-#  yandex-news.pot (Yandex News 0.2)  #-#-#-#-#
+# Copyright (C) 2014 Yandex News
+# This file is distributed under the same license as the Yandex News package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Yandex News\n"
-"Report-Msgid-Bugs-To: Yevhen <yevhen@live.com>\n"
-"POT-Creation-Date: 2013-12-05 22:55+0200\n"
-"PO-Revision-Date: 2013-12-05 23:02+0200\n"
+"Project-Id-Version: Yandex News 0.2\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/yandex-news\n"
+"POT-Creation-Date: 2014-05-06 08:21:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Last-Translator: Yevhen <yevhen@live.com>\n"
+"Last-Translator: Yevhen Amelin <yevhen.amelin@gmail.com>\n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
 
 #: yandex-news.php:48
 msgid "Yandex.News plugin settings page"
-msgstr "Настройки плагина Яндекс.Новости"
+msgstr "Страница настроек плагина Яндекс.Новости"
 
 #: yandex-news.php:49
 msgid "Yandex.News"
@@ -33,7 +37,47 @@ msgstr "Картинка"
 msgid "Categories"
 msgstr "Категории"
 
-#: yandex-news.php:133
-#, php-format
-msgid "Your feed URL: <a href=\"%s\">%1$s</a>"
-msgstr "URL вашей ленты: <a href=\"%s\">%1$s</a>"
+#: yandex-news.php:60
+msgid "Yandex News Settings"
+msgstr "Настройки плагина Яндекс.Новости"
+
+#: yandex-news.php:147
+msgid "You must specify a valid image URL"
+msgstr "Требуется указать корректный путь к изображению"
+
+#: yandex-news.php:157
+msgid "Your feed is active"
+msgstr "Ваша лента активна"
+
+#: yandex-news.php:158
+msgid "Feed URL: <a href=\"%s\" target=\"_blank\">%1$s</a>"
+msgstr "Путь к ленте: <a href=\"%s\" target=\"_blank\">%1$s</a>"
+
+#: yandex-news.php:165
+msgid "Your feed is not active"
+msgstr "Ваша лента не активна"
+
+#: yandex-news.php:174
+msgid "Feed name"
+msgstr "Название ленты"
+
+#: yandex-news.php:184
+msgid "Feed image"
+msgstr "Изображение ленты"
+
+#: yandex-news.php:185
+msgid "required field"
+msgstr "обязательное поле"
+
+#. Plugin Name of the plugin/theme
+msgid "Yandex News"
+msgstr "Яндекс.Новости"
+
+#. Description of the plugin/theme
+msgid "Generates an XML feed to export news in the Yandex.News service"
+msgstr "Генерирует ленту в формате XML для экспорта в сервис Яндекс.Новости"
+
+#. Author of the plugin/theme
+msgid "Yevhen Amelin <yevhen.amelin@gmail.com>"
+msgstr "Евгений Амелин <yevhen.amelin@gmail.com>"
+

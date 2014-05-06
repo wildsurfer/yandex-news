@@ -1,19 +1,21 @@
 <?php
 /*
 Plugin Name: Yandex News
-Author: Yevhen Amelin <yevhen@live.com>
+Author: Yevhen Amelin <yevhen.amelin@gmail.com>
 Description: Generates an XML feed to export news in the Yandex.News service
 Text Domain: yandex-news
-Version: 0.1
+Version: 0.2
 */ 
 
 class YandexNews
 {
     private $options;
+    private $feedname;
 
     public function __construct()
     {
         $this->options = get_option( 'yandex_news' );
+        $this->feedname = ( !empty( $o['path'] ) ) ? $o['path'] : 'yandex';
 
         add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
         add_action( 'admin_init', array( $this, 'page_init' ) );
@@ -26,18 +28,14 @@ class YandexNews
 
     public function add_feed()
     {
-        $o = $this->options;
-
-        if ( !isset( $o['image'] ) || empty( $o['image'] ) )
+        if ( empty( $this->options['image'] ) )
             return;
 
-        $feedname = ( isset( $o['path'] ) && !empty( $o['path'] ) ) ? $o['path'] : 'yandex';
-
-        add_feed( $feedname, array( $this, 'do_feed' ) );
+        add_action( 'do_feed_'.$this->feedname, array( $this, 'do_feed' ) );
 
         add_rewrite_rule(
-            'feed/' . $feedname . '/?$',
-            'index.php?feed=' . $feedname,
+            'feed/' . $this->feedname . '/?$',
+            'index.php?feed=' . $this->feedname,
             'top'
         );
         flush_rewrite_rules();
@@ -109,31 +107,62 @@ class YandexNews
             'yandex-news-admin',
             'yandex_news_feed_settings'
         );
+
     }
 
     public function sanitize( $input )
     {
         $new_input = array();
-        if( isset( $input['path'] ) )
+        if ( isset( $input['path'] ) )
             $new_input['path'] = sanitize_text_field( $input['path'] );
 
-        if( isset( $input['image'] ) )
-            $new_input['image'] = esc_url_raw( $input['image'] );
+        $new_input['image'] = $this->sanitize_image( $input['image'] );
         
-        if( isset( $input['categories'] ) )
+        if ( isset( $input['categories'] ) )
             foreach( $input['categories'] as $category )
-                if( absint( $category ) )
+                if ( absint( $category ) )
                     $new_input['categories'][] = $category;
 
         return $new_input;
     }
+    
+    public function sanitize_image( $image=null ) {
+        if ( !$image )
+            $image = $this->options['image'];
+
+            
+        $error = false;
+        if ( isset( $image ) ) {
+          $new_image = esc_url_raw( $image );
+          $headers = get_headers( $new_image, true );
+          
+          if ( mb_strpos( $headers['Content-Type'], 'image' ) === false )
+              $error = true;
+        }
+        
+        if ( strlen( $new_image ) == 0 || $error )
+            add_settings_error(
+              'image',
+              esc_attr( 'settings_updated' ),
+              __('You must specify a valid image URL', 'yandex-news')
+            );
+        
+        return $new_image;
+    }
 
     public function print_section_info()
     {
-        if ( $this->options['path'] ) {
-            printf( '<p>' . __( 'Your feed URL: <a href="%s">%1$s</a>',
+        $this->sanitize_image();
+        if ( $this->options['image'] && !get_settings_errors( 'image' ) ) {
+            echo '<p style="color: green; font-weight: bold">' . __( 'Your feed is active', 'yandex-news' ) . '</p>';
+            printf( '<p>' . __( 'Feed URL: <a href="%s" target="_blank">%1$s</a>',
             'yandex-news' ) . '</p>', get_bloginfo('url') . '/feed/' .
-            $this->options['path']);
+            $this->feedname);
+        }
+        else {
+            settings_errors( 'image', true, true );
+            echo '<p class="error-message">' .
+                __( 'Your feed is not active', 'yandex-news' ) . '</p>';
         }
     }
     
@@ -141,9 +170,9 @@ class YandexNews
     {
         printf(
             '<input class="regular-text" type="text" id="path"
-            name="yandex_news[path]" value="%s" />', 
-            isset( $this->options['path'] ) ? esc_attr(
-            $this->options['path'] ) : ''
+            name="yandex_news[path]" value="%s" /><p class="description">' .
+            __('Feed name', 'yandex-news') . '</p>',
+            $this->feedname
         );
     }
 
@@ -151,7 +180,9 @@ class YandexNews
     {
         printf(
             '<input class="regular-text" type="text" id="image"
-            name="yandex_news[image]" value="%s" />', 
+            name="yandex_news[image]" value="%s" /><p class="description">' .
+            __('Feed image', 'yandex-news') . ' (' .
+            __('required field', 'yandex-news') . ')</p>', 
             isset( $this->options['image'] ) ? esc_attr(
             $this->options['image'] ) :
             ''
@@ -164,7 +195,7 @@ class YandexNews
 
         foreach( $categories as $category ) {
             $state = 0;
-            if( isset( $this->options['categories'] ) and
+            if ( isset( $this->options['categories'] ) and
                 in_array( $category->cat_ID, $this->options['categories'] ) )
                 $state = 1;
 
@@ -177,11 +208,10 @@ class YandexNews
         }
     }
 
-    public function query_alter( $query ) {
-        $o = $this->options;
-        $feedname = ( isset( $o['path'] ) && !empty( $o['path'] ) ) ? $o['path'] : 'yandex';
+    public function query_alter( $query )
+    {
         if ( isset ( $query->query_vars['feed'] ) and 
-             $query->query_vars['feed'] == $feedname ) {
+             $query->query_vars['feed'] == $this->feedname ) {
 
             if ( $this->options['categories'] ) {
                 $cats = join( ',', $this->options['categories'] );
