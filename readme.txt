@@ -15,6 +15,7 @@ Yandex.News plugin generates an XML feed, called YML, for export of posts in the
 Yandex.News plugin generates an XML feed, called YML, for export of posts in the Yandex.News service.
 
 Features:
+
 * the possibility to specify the feed path
 * categories filter
 
